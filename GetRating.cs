@@ -27,10 +27,16 @@ namespace OpenHackTeam16
             }
 
             // get data from cosmos db
-            ProductRating productRating = new ProductRatings().Get(ratingId);
-
-
-            return new OkObjectResult(JsonConvert.SerializeObject(productRating));
+            ProductRating productRating = null;
+            try
+            {
+                productRating = new ProductRatings().Get(ratingId);
+                return new OkObjectResult(JsonConvert.SerializeObject(productRating));
+            }
+            catch
+            {
+                return new NotFoundObjectResult($"ProductRating not found for rating id {ratingId}");
+            }
         }
     }
 }
