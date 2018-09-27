@@ -25,19 +25,18 @@ namespace OpenHackTeam16
                 log.LogInformation($"Invalid rating id {ratingId}");
                 return new BadRequestObjectResult($"Invalid rating id {ratingId}");
             }
-            ProductRating productRating;
+
             // get data from cosmos db
+            ProductRating productRating = null;
             try
             {
                 productRating = new ProductRatings().Get(ratingId);
+                return new OkObjectResult(JsonConvert.SerializeObject(productRating));
             }
             catch
             {
-                return new BadRequestObjectResult($"Invalid rating id {ratingId}");
+                return new NotFoundObjectResult($"ProductRating not found for rating id {ratingId}");
             }
-
-
-            return new OkObjectResult(JsonConvert.SerializeObject(productRating));
         }
     }
 }
