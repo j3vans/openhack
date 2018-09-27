@@ -93,14 +93,4 @@ namespace OpenHackTeam16
             //     new BadRequestObjectResult("Please pass a name on the query string or in the request body");
         }
     }
-    public class ProductRating
-    {
-        public string UserId { get; set; }
-        public string ProductId { get; set; }
-        public string LocationName { get; set; }
-        public int Rating { get; set; }
-        public string UserNotes { get; set; }
-        public Guid Id { get; set; }
-        public DateTime TimeStamp { get; set; }
-    }
 }
