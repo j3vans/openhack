@@ -19,26 +19,69 @@ namespace OpenHackTeam16
         [FunctionName("CreateRating")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req, ILogger log)
         {
+            bool invalidinput = false;
+            string errorString = "";
+            string getProductURL = "https://serverlessohproduct.trafficmanager.net/api/GetProduct?productId=";
+            string getUserURL = "https://serverlessohuser.trafficmanager.net/api/GetUser?userId=";
             log.LogInformation("C# HTTP trigger function processed a request.");
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             ProductRating rating = JsonConvert.DeserializeObject<ProductRating>(requestBody);
+            HttpWebResponse queryResult;
+            var webReq = HttpWebRequest.CreateHttp(getProductURL + rating.ProductId);
 
-            // HttpWebResponse queryResult = WebRequest.Create($"https://serverlessohproduct.trafficmanager.net/api/GetProduct?productId={rating.ProductId}").GetRes˚çponse();
-            var client = new HttpClient();
-            HttpResponseMessage queryResult = await client.GetAsync($"https://serverlessohproduct.trafficmanager.net/api/GetProduct?productId={rating.ProductId}");
-
-            if (queryResult.IsSuccessStatusCode)
+            try
             {
-                log.LogInformation($"Invalid product {rating.ProductId}");
-                new BadRequestObjectResult($"Invalid product {rating.ProductId}");
+                queryResult = (HttpWebResponse)webReq.GetResponse();
+                if (queryResult.StatusCode != HttpStatusCode.OK)
+                {
+                    errorString += $"Invalid product {rating.ProductId}\n";
+                    log.LogInformation(errorString);
+                }
             }
+            catch
+            {
+                errorString += $"Invalid product {rating.ProductId}\n";
+                log.LogInformation(errorString);
+                invalidinput = true;
+            }
+
+            webReq = HttpWebRequest.CreateHttp(getUserURL + rating.UserId);
+
+            try
+            {
+                queryResult = (HttpWebResponse)webReq.GetResponse();
+                if (queryResult.StatusCode != HttpStatusCode.OK)
+                {
+                    errorString += $"Invalid User {rating.UserId}\n";
+                    log.LogInformation(errorString);
+                }
+            }
+            catch //test git
+            {
+                errorString += $"Invalid User {rating.UserId}\n";
+                log.LogInformation(errorString);
+                invalidinput = true;
+            }
+
+
+            //var test = new StreamReader(queryResult.GetResponseStream()).ReadToEnd();
 
             if (rating.Rating < 0 || rating.Rating > 5)
             {
-                log.LogInformation($"Invalid product rating {rating.Rating}");
-                // new BadRequestObjectResult($"Invalid product rating {rating.Rating}");
+                errorString += $"Invalid product rating {rating.Rating}\n";
+                log.LogInformation(errorString);
+                invalidinput = true;
             }
-            return new BadRequestObjectResult($"Invalid product {rating.ProductId}");
+
+            if (!invalidinput)
+            {
+                return new OkObjectResult($"Rating submitted");
+            }
+            else
+            {
+                return new BadRequestObjectResult(errorString);
+            }
+
 
             // string name = req.Query["name"];
 
