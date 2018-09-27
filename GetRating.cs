@@ -1,43 +1,36 @@
-using System;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Web;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.Extensions.Logging;
+using System;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+
+
 namespace OpenHackTeam16
 {
     public static class GetRating
     {
         [FunctionName("GetRating")]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req, ILogger log)
+        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
         {
-            string ratingID = req.Query["ratingId"];
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("GetRating function triggered...");
 
-            // string name = req.Query["ratingId"];
-            // name = name ?? data?.name;
+            string ratingId = req.Query["ratingId"];
+            Guid parsedRatingId;
 
-            return ratingID != null ?
-                (ActionResult)new OkObjectResult($"Hello, {name}") :
-                new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            if (string.IsNullOrWhiteSpace(ratingId) || Guid.TryParse(ratingId, out parsedRatingId) == false)
+            {
+                log.LogInformation($"Invalid rating id {ratingId}");
+                return new BadRequestObjectResult($"Invalid rating id {ratingId}");
+            }
+
+            // get data from cosmos db
+            ProductRating productRating = new ProductRatings().Get(ratingId);
+
+
+            return new OkObjectResult(JsonConvert.SerializeObject(productRating));
         }
     }
-    // public class ProductRating
-    // {
-    //     public string UserId { get; set; }
-    //     public string ProductId { get; set; }
-    //     public string LocationName { get; set; }
-    //     public int Rating { get; set; }
-    //     public string UserNotes { get; set; }
-    //     public Guid Id { get; set; }
-    //     public DateTime TimeStamp { get; set; }
-    // }
 }

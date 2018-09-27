@@ -22,6 +22,7 @@ namespace OpenHackTeam16
         {
             bool invalidinput = false;
             string errorString = "";
+            ProductRatings prs = new ProductRatings();
             string getProductURL = "https://serverlessohproduct.trafficmanager.net/api/GetProduct?productId=";
             string getUserURL = "https://serverlessohuser.trafficmanager.net/api/GetUser?userId=";
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -76,6 +77,7 @@ namespace OpenHackTeam16
 
             if (!invalidinput)
             {
+                var ratingId = prs.Add(rating);
                 return new OkObjectResult($"Rating submitted");
             }
             else
