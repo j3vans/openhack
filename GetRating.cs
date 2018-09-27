@@ -26,7 +26,7 @@ namespace OpenHackTeam16
             // name = name ?? data?.name;
 
             return ratingID != null ?
-                (ActionResult)new OkObjectResult($"Hello, {name}") :
+                (ActionResult)new OkObjectResult($"Hello, {ratingID}") :
                 new BadRequestObjectResult("Please pass a name on the query string or in the request body");
         }
     }
