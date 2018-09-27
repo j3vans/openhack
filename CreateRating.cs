@@ -42,6 +42,7 @@ namespace OpenHackTeam16
             {
                 errorString += $"Invalid product {rating.ProductId}\n";
                 log.LogInformation(errorString);
+                invalidinput = true;
             }
 
             webReq = HttpWebRequest.CreateHttp(getUserURL + rating.UserId);
@@ -57,8 +58,8 @@ namespace OpenHackTeam16
             }
             catch
             {
-                log.LogInformation($"Invalid User {rating.UserId}");
-                new BadRequestObjectResult($"Invalid user {rating.UserId}");
+                errorString += $"Invalid User {rating.UserId}\n";
+                log.LogInformation(errorString);
                 invalidinput = true;
             }
 
@@ -67,15 +68,18 @@ namespace OpenHackTeam16
 
             if (rating.Rating < 0 || rating.Rating > 5)
             {
-
-                log.LogInformation($"Invalid product rating {rating.Rating}");
+                errorString += $"Invalid product rating {rating.Rating}\n";
+                log.LogInformation(errorString);
                 invalidinput = true;
-                new BadRequestObjectResult($"Invalid product rating {rating.Rating}");
             }
 
             if (!invalidinput)
             {
                 return new OkObjectResult($"Rating submitted");
+            }
+            else
+            {
+                return new BadRequestObjectResult(errorString);
             }
 
 
