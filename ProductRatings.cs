@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
+using System.Linq;
 
 namespace OpenHackTeam16
 {
@@ -41,9 +42,14 @@ namespace OpenHackTeam16
 
         }
 
-        public IEnumerable<ProductRating> All()
+        public IEnumerable<Document> All(string userid)
         {
-            return null;
+            using (client = new DocumentClient(new Uri(Endpoint), Key))
+            {
+                var collection = UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId);
+                var docs = client.ReadDocumentCollectionAsync(collection).Result;
+                return docs;
+            }
         }
 
         public void Delete(Guid id)
