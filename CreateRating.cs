@@ -78,7 +78,9 @@ namespace OpenHackTeam16
             if (!invalidinput)
             {
                 var ratingId = prs.Add(rating);
-                return new OkObjectResult($"Rating submitted");
+                rating.Id = ratingId;
+                string resultObject = JsonConvert.SerializeObject(rating);
+                return new OkObjectResult($"{resultObject}");
             }
             else
             {
