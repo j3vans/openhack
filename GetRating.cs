@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 namespace OpenHackTeam16
 {
-    public static class CreateRating
+    public static class GetRating
     {
         [FunctionName("GetRating")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req, ILogger log)
