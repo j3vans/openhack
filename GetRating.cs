@@ -27,7 +27,7 @@ namespace OpenHackTeam16
             }
 
             // TODO: get data from cosmos db
-            ProductRating productRating = new ProductRating();
+            ProductRating productRating = new ProductRatings().Get(ratingId);
 
 
             return new OkObjectResult(JsonConvert.SerializeObject(productRating));
