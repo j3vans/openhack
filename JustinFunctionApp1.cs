@@ -29,7 +29,7 @@ namespace BFYOC.GetProduct
             if (!string.IsNullOrEmpty(productId))
             {
                 log.LogInformation($"User POST data: {productId}");
-                return (ActionResult)new OkObjectResult($"The product productId for your product id {productId} is Starfruit Explosion and the description is This starfruit ice cream is out of this world!");
+                return (ActionResult)new OkObjectResult($"The product productId for your product id {productId} is Starfruit Explosion");
             }
             else
             {
