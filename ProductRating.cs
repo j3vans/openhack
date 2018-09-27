@@ -4,6 +4,7 @@ namespace OpenHackTeam16
 {
     public class ProductRating
     {
+        public string id { get; set; }
         public string UserId { get; set; }
         public string ProductId { get; set; }
         public string LocationName { get; set; }
