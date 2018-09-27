@@ -56,7 +56,7 @@ namespace OpenHackTeam16
                     log.LogInformation(errorString);
                 }
             }
-            catch //test
+            catch //test git
             {
                 errorString += $"Invalid User {rating.UserId}\n";
                 log.LogInformation(errorString);
