@@ -27,7 +27,7 @@ namespace OpenHackTeam16
             }
 
             // get the ratings for the user from your database
-            IEnumerable<ProductRating> productRatings = new ProductRatings().All();
+            IEnumerable<ProductRating> productRatings = new ProductRatings().All(userId);
 
 
             return new OkObjectResult(JsonConvert.SerializeObject(productRatings));
