@@ -47,7 +47,8 @@ namespace OpenHackTeam16
         {
             using (client = new DocumentClient(new Uri(Endpoint), Key))
             {
-                var query = client.CreateDocumentQuery<ProductRating>(CollectionId).Where(t => t.UserId == userid).AsDocumentQuery();
+                var collection = UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId);
+                var query = client.CreateDocumentQuery<ProductRating>(collection).Where(t => t.UserId == userid).AsDocumentQuery();
                 List<ProductRating> list = new List<ProductRating>();
                 while (query.HasMoreResults)
                 {
