@@ -47,8 +47,13 @@ namespace OpenHackTeam16
         {
             using (client = new DocumentClient(new Uri(Endpoint), Key))
             {
-                var query = client.CreateDocumentQuery<ProductRating>(CollectionId).Where(t => t.UserId == userid);
-                return query.ToList();
+                var query = client.CreateDocumentQuery<ProductRating>(CollectionId).Where(t => t.UserId == userid).AsDocumentQuery();
+                List<ProductRating> list = new List<ProductRating>();
+                while (query.HasMoreResults)
+                {
+                    list.AddRange(query.ExecuteNextAsync<ProductRating>().Result);
+                }
+                return list;
             }
         }
 

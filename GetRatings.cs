@@ -25,7 +25,7 @@ namespace OpenHackTeam16
                 log.LogInformation($"Invalid user id {userId}");
                 return new BadRequestObjectResult($"Invalid user id {userId}");
             }
-
+            //resync
             // get the ratings for the user from your database
             IEnumerable<ProductRating> productRatings = new ProductRatings().All(userId);
 
