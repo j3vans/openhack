@@ -26,7 +26,7 @@ namespace OpenHackTeam16
                 return new BadRequestObjectResult($"Invalid rating id {ratingId}");
             }
 
-            // TODO: get data from cosmos db
+            // get data from cosmos db
             ProductRating productRating = new ProductRatings().Get(ratingId);
 
 

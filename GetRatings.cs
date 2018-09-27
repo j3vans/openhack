@@ -26,8 +26,8 @@ namespace OpenHackTeam16
                 return new BadRequestObjectResult($"Invalid user id {userId}");
             }
 
-            // TODO: get the ratings for the user from your database
-            List<ProductRating> productRatings = new List<ProductRating>();
+            // get the ratings for the user from your database
+            IEnumerable<ProductRating> productRatings = new ProductRatings().All();
 
 
             return new OkObjectResult(JsonConvert.SerializeObject(productRatings));
