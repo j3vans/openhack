@@ -20,6 +20,7 @@ namespace OpenHackTeam16
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req, ILogger log)
         {
             bool invalidinput = false;
+            string errorString = "";
             string getProductURL = "https://serverlessohproduct.trafficmanager.net/api/GetProduct?productId=";
             string getUserURL = "https://serverlessohuser.trafficmanager.net/api/GetUser?userId=";
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -33,15 +34,14 @@ namespace OpenHackTeam16
                 queryResult = (HttpWebResponse)webReq.GetResponse();
                 if (queryResult.StatusCode != HttpStatusCode.OK)
                 {
-                    log.LogInformation($"Invalid product {rating.ProductId}");
-                    new BadRequestObjectResult($"Invalid product {rating.ProductId}");
+                    errorString += $"Invalid product {rating.ProductId}\n";
+                    log.LogInformation(errorString);
                 }
             }
             catch
             {
-                log.LogInformation($"Invalid product {rating.ProductId}");
-                new BadRequestObjectResult($"Invalid product {rating.ProductId}");
-                invalidinput = true;
+                errorString += $"Invalid product {rating.ProductId}\n";
+                log.LogInformation(errorString);
             }
 
             webReq = HttpWebRequest.CreateHttp(getUserURL + rating.UserId);
@@ -51,8 +51,8 @@ namespace OpenHackTeam16
                 queryResult = (HttpWebResponse)webReq.GetResponse();
                 if (queryResult.StatusCode != HttpStatusCode.OK)
                 {
-                    log.LogInformation($"Invalid User {rating.UserId}");
-                    new BadRequestObjectResult($"Invalid user {rating.UserId}");
+                    errorString += $"Invalid User {rating.UserId}\n";
+                    log.LogInformation(errorString);
                 }
             }
             catch
@@ -67,6 +67,7 @@ namespace OpenHackTeam16
 
             if (rating.Rating < 0 || rating.Rating > 5)
             {
+
                 log.LogInformation($"Invalid product rating {rating.Rating}");
                 invalidinput = true;
                 new BadRequestObjectResult($"Invalid product rating {rating.Rating}");
