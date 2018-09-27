@@ -25,7 +25,7 @@ namespace OpenHackTeam16
                 log.LogInformation($"Invalid user id {userId}");
                 return new BadRequestObjectResult($"Invalid user id {userId}");
             }
-
+            //resync
             // get the ratings for the user from your database
             try
             {
@@ -34,7 +34,7 @@ namespace OpenHackTeam16
             }
             catch
             {
-                return new NotFoundObjectResult($"no ProductRating found for user id {userId});
+                return new NotFoundObjectResult($"no ProductRating found for user id {userId}");
             }
         }
     }
