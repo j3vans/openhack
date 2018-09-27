@@ -19,14 +19,15 @@ namespace OpenHackTeam16
 
         }
 
-        public ProductRating Get(string id)
+        public Document Get(string id)
         {
             using (client = new DocumentClient(new Uri(Endpoint), Key))
             {
                 var collection = UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id);
-                var rating = client.ReadDocumentAsync(collection);
+                Document rating = client.ReadDocumentAsync(collection).Result;
+                return rating;
             }
-            return null;
+
         }
 
         public string Add(ProductRating rating)
