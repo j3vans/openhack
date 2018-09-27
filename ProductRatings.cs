@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 
+
 namespace OpenHackTeam16
 {
     public class ProductRatings
     {
+
         public void Init()
         {
 
