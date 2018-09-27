@@ -10,8 +10,8 @@ namespace OpenHackTeam16
     {
         public static readonly string Endpoint = "https://team16.documents.azure.com:443/";
         private static readonly string Key = "3vb5HwBkNzdmwibw7M3BVLoewdT0JZvJVNrzE4fUzxESbr9KhoUzmXnoIQZxAh7UJ3UAfLqGUS8kTrBGSNIqpA==";
-        private static readonly string DatabaseId = "ToDoList";
-        private static readonly string CollectionId = "Items";
+        private static readonly string DatabaseId = "Ratings";
+        private static readonly string CollectionId = "RatingsCollection";
 
         private DocumentClient client;
 
@@ -20,12 +20,12 @@ namespace OpenHackTeam16
 
         }
 
-        public Document Get(string id)
+        public ProductRating Get(string id)
         {
             using (client = new DocumentClient(new Uri(Endpoint), Key))
             {
                 var collection = UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id);
-                Document rating = client.ReadDocumentAsync(collection).Result;
+                var rating = client.ReadDocumentAsync<ProductRating>(collection).Result;
                 return rating;
             }
 
@@ -42,16 +42,16 @@ namespace OpenHackTeam16
 
         }
 
-        public IEnumerable<Document> All(string userid)
+        public IEnumerable<ProductRating> All(string userid)
         {
             using (client = new DocumentClient(new Uri(Endpoint), Key))
             {
-                var collection = UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId);
-                var docs = client.ReadDocumentCollectionAsync(collection).Result;
-                return docs;
+                var query = client.CreateDocumentQuery<ProductRating>(CollectionId).Where(t => t.UserId == userid);
+                return query;
             }
         }
 
+        ///comment
         public void Delete(Guid id)
         {
 
