@@ -77,6 +77,7 @@ namespace OpenHackTeam16
 
             if (!invalidinput)
             {
+                rating.TimeStamp = DateTime.UtcNow;
                 var ratingId = prs.Add(rating);
                 rating.Id = ratingId;
                 string resultObject = JsonConvert.SerializeObject(rating);
