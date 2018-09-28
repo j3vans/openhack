@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json.schemastore.org/proxies",
+    "proxies": {
+        "GetUser": {
+            "matchCondition": {
+                "methods": [
+                    "GET"
+                ],
+                "route": "/"
+            },
+            "backendUri": "https://serverlessohuser.trafficmanager.net/api/GetUser"
+        },
+        "GetProduct": {
+            "matchCondition": {
+                "methods": [
+                    "GET"
+                ],
+                "route": "/"
+            },
+            "backendUri": "https://serverlessohuser.trafficmanager.net/api/GetProduct"
+        },
+        "GetProducts": {
+            "matchCondition": {
+                "methods": [
+                    "GET"
+                ],
+                "route": "/"
+            },
+            "backendUri": "https://serverlessohuser.trafficmanager.net/api/GetProducts"
+        }
+    }
+}
